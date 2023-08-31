@@ -23,7 +23,7 @@ class Badge:
     BOOT_MODE_WEBUSB_LEGACY = 0x01
     BOOT_MODE_FPGA_DOWNLOAD = 0x02
     BOOT_MODE_WEBUSB        = 0x03
-    
+
     MAGIC = 0xFEEDF00D
 
     def __init__(self):
@@ -46,7 +46,7 @@ class Badge:
 
         self.request_type_in = usb.util.build_request_type(usb.util.CTRL_IN, usb.util.CTRL_TYPE_CLASS, usb.util.CTRL_RECIPIENT_INTERFACE)
         self.request_type_out = usb.util.build_request_type(usb.util.CTRL_OUT, usb.util.CTRL_TYPE_CLASS, usb.util.CTRL_RECIPIENT_INTERFACE)
-        
+
         self.rx_data = bytes([])
         self.packets = []
 
@@ -143,7 +143,7 @@ class Badge:
         if len(garbage) > 0 and self.printGarbage:
             print("Garbage:", garbage, garbage.decode("ascii", "ignore"))
         return True
-    
+
     def receive_packet(self, timeout = 100):
         self.receive_packets(timeout)
         packet = None
@@ -151,14 +151,14 @@ class Badge:
             packet = self.packets[0]
             self.packets = self.packets[1:]
         return packet
-    
+
     def peek_packet(self, timeout = 100):
         self.receive_packets(timeout)
         packet = None
         if len(self.packets) > 0:
             packet = self.packets[0]
         return packet
-    
+
     def sync(self):
         self.receive_packets()
         self.packets = []
@@ -201,7 +201,7 @@ class Badge:
             print("No INFO", response["command"])
             return False
         return response["payload"].decode("ascii", "ignore")
-    
+
     def fs_list(self, payload):
         self.send_packet(b"FSLS", payload + b"\0")
         response = self.receive_packet()
@@ -215,7 +215,7 @@ class Badge:
         payload = response["payload"]
 
         output = []
-        
+
         while len(payload) > 0:
             data = payload[:1 + 4]
             payload = payload[1 + 4:]
@@ -363,7 +363,7 @@ class Badge:
         payload = response["payload"]
         if not payload[0]:
             return False
-        
+
         data = bytearray()
 
         while True:
@@ -393,7 +393,7 @@ class Badge:
             print("Wrong payload length")
             return False
         return True if payload[0] else False
-    
+
     def read_chunk(self):
         self.send_packet(b"CHNK")
         response = self.receive_packet()
@@ -740,7 +740,7 @@ class Badge:
         if reset_esp:
             self.device.ctrl_transfer(self.request_type_out, self.REQUEST_RESET, 0x0000, self.webusb_esp32.bInterfaceNumber)
         self.device.ctrl_transfer(self.request_type_out, self.REQUEST_BAUDRATE, 1152, self.webusb_esp32.bInterfaceNumber)
-    
+
     def start_webusb(self):
         self.device.ctrl_transfer(self.request_type_out, self.REQUEST_STATE, 0x0001, self.webusb_esp32.bInterfaceNumber) # Connect
         current_mode = int(self.device.ctrl_transfer(self.request_type_in, self.REQUEST_MODE_GET, 0, self.webusb_esp32.bInterfaceNumber, 1)[0]) # Read WebUSB mode

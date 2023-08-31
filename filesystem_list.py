@@ -34,7 +34,7 @@ parser.add_argument("name", help="directory name")
 parser.add_argument('--recursive', '-r', '-R', action='store_true')
 args = parser.parse_args()
 
-name = args.name
+name = os.path.normpath(args.name)
 recursive = args.recursive
 
 if name == "/":

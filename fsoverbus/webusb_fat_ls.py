@@ -6,7 +6,7 @@ parser = argparse.ArgumentParser(description='MCH2022 badge FAT FS list tool')
 parser.add_argument("name", help="directory name")
 args = parser.parse_args()
 
-name = args.name
+name = os.path.normpath(args.name)
 dev = WebUSB()
 res = dev.getFSDir(name)
 print("Directory listing for \"{}\"...".format(name))

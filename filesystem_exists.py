@@ -9,7 +9,7 @@ parser = argparse.ArgumentParser(description='MCH2022 badge FAT filesystem file 
 parser.add_argument("name", help="Name of file")
 args = parser.parse_args()
 
-name = args.name
+name = os.path.normpath(args.name)
 
 if not (name.startswith("/internal") or name.startswith("/sd")):
     print("Path should always start with /internal or /sd")

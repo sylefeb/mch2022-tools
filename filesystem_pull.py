@@ -10,8 +10,7 @@ parser.add_argument("name", help="Remote file")
 parser.add_argument("target", help="Local file")
 args = parser.parse_args()
 
-name = args.name
-target = args.target
+name = os.path.normpath(args.name)
 
 if not (name.startswith("/internal") or name.startswith("/sd")):
     print("Path should always start with /internal or /sd")

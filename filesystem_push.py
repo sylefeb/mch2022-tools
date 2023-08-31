@@ -10,8 +10,8 @@ parser.add_argument("name", help="Local file")
 parser.add_argument("target", help="Remote file")
 args = parser.parse_args()
 
-name = args.name
-target = args.target
+name = os.path.normpath(args.name)
+target = os.path.normpath(args.target)
 
 with open(name, "rb") as f:
     data = f.read()

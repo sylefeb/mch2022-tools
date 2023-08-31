@@ -74,11 +74,11 @@ def handle_packet(identifier, command, payload):
 def parse_response(new_data = b""):
     global data_buffer
     data_buffer += new_data
-    
+
     if len(data_buffer) < 20: # length of header
         # Not enough data
         return
-    
+
     while len(data_buffer) >= 20:
         header = struct.unpack("<IIIII", data_buffer[:20])
         if header[0] != magic:
@@ -102,7 +102,7 @@ def parse_response(new_data = b""):
         #print("Packet", identifier, command, command_ascii, payload)
         handle_packet(identifier, command, payload)
 
-path = args.path
+path = os.path.normpath(args.path)
 
 if (path.startswith("/flash")):
     path = "/internal" + path[6:]

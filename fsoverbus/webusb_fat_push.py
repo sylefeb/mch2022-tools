@@ -12,7 +12,7 @@ name = args.name
 dev = WebUSB()
 with open(args.name, "rb") as file:
     data = file.read()
-res = dev.pushFSfile(args.target, data)
+res = dev.pushFSfile(os.path.normpath(args.target), data)
 if res:
     print("File uploaded")
 else:
